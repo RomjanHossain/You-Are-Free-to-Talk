@@ -1,9 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:youarefreetotalk/pages/home/home.dart';
 import 'package:youarefreetotalk/pages/login/login.dart';
 import 'package:youarefreetotalk/pages/register/register.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
