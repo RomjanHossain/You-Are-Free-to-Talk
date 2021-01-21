@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CenterFormReg extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final validCharacters = RegExp(r'^[a-zA-Z0-9_\-=@,\.;]+$');
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _pass = TextEditingController();
@@ -138,8 +140,45 @@ class CenterFormReg extends StatelessWidget {
                 color: Colors.blue,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState.validate()) {
+                    _formKey.currentState.save();
+                    try {
+                      UserCredential userCredential =
+                          await _auth.createUserWithEmailAndPassword(
+                              email: _username + '@yaft.com',
+                              password: _password);
+                    } on FirebaseAuthException catch (e) {
+                      if (e.code == 'weak-password') {
+                        //? warning: week password
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            content: Text(
+                              'Weak Password detected',
+                              textAlign: TextAlign.center,
+                            ),
+                            duration: Duration(seconds: 1),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      } else if (e.code == 'email-already-in-use') {
+                        //? warning: username already exists
+                        Scaffold.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Color(0xFFfe001c),
+                            content: Text(
+                              'Username Taken',
+                              textAlign: TextAlign.center,
+                            ),
+                            duration: Duration(seconds: 1),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+                    } catch (e) {
+                      print('form firebaseAtuth\n' + e);
+                    }
                     // If the form is valid, display a Snackbar.
                     Scaffold.of(context).showSnackBar(
                       SnackBar(
