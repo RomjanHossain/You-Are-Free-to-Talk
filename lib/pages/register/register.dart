@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:youarefreetotalk/widgets/centerForm.dart';
+import 'package:youarefreetotalk/widgets/form/reg.dart';
 
 //? animation for upload fomr
 Route registerFormPageAnimation() {
