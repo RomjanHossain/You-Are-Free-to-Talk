@@ -226,7 +226,6 @@ class _CenterFormRegState extends State<CenterFormReg> {
               ),
             ),
           ),
-
           _isloading
               ? CircularProgressIndicator(
                   backgroundColor: Colors.blue,
