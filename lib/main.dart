@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:youarefreetotalk/pages/home/home.dart';
 import 'package:youarefreetotalk/pages/login/login.dart';
 import 'package:youarefreetotalk/pages/register/register.dart';
+import 'package:youarefreetotalk/services/database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,18 +16,24 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiProvider(
+      providers: [
+        StreamProvider<User>.value(value: DatabaseServices().user),
+        Provider(create: (context) => DatabaseServices()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        initialRoute: LoginPage.id,
+        routes: {
+          HomePage.id: (context) => HomePage(),
+          LoginPage.id: (context) => LoginPage(),
+          RegisterPage.id: (context) => RegisterPage(),
+        },
       ),
-      initialRoute: LoginPage.id,
-      routes: {
-        HomePage.id: (context) => HomePage(),
-        LoginPage.id: (context) => LoginPage(),
-        RegisterPage.id: (context) => RegisterPage(),
-      },
     );
   }
 }
