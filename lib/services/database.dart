@@ -15,7 +15,7 @@ class DatabaseServices {
 
 // setted first user values
   Future<void> createUserData(User user) {
-    DocumentReference userRef = _db.collection('Users').doc(user.uid);
+    DocumentReference userRef = _db.collection('reports').doc(user.uid);
 
     return userRef.set(
       {
@@ -23,6 +23,7 @@ class DatabaseServices {
         'isAdmin': false,
         'userEmail': user.email,
         'created': timeCreated,
+        'username': user.email.split('@')[0],
       },
     );
   }
